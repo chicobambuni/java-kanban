@@ -21,27 +21,29 @@ public class Main {
         Epic epic1 = new Epic("epic1", "Описание");
         Subtask subtask1 = new Subtask("subtask1", "Описание", epic1);
         Subtask subtask2 = new Subtask("subtask2", "Описание", epic1);
-        epic1.addSubtask(subtask1);
-        epic1.addSubtask(subtask2);
 
         Epic epic2 = new Epic("epic2", "Описание");
         Subtask subtask3 = new Subtask("subtask3", "Описание", epic2);
-        epic2.addSubtask(subtask3);
 
         taskManager.addTask(task1);
         taskManager.addTask(task2);
-        taskManager.addEpic(epic1);
-        taskManager.addEpic(epic2);
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
         taskManager.addSubtask(subtask3);
+        taskManager.addEpic(epic1);
+        taskManager.addEpic(epic2);
         printAllTasks(taskManager);
 
         task1.setStatus(TaskStatus.IN_PROGRESS);
-        task1.setStatus(TaskStatus.DONE);
+        taskManager.updateTask(task1);
+        task2.setStatus(TaskStatus.DONE);
+        taskManager.updateTask(task2);
         subtask1.setStatus(TaskStatus.IN_PROGRESS);
-        subtask1.setStatus(TaskStatus.DONE);
+        taskManager.updateSubtask(subtask1);
+        subtask2.setStatus(TaskStatus.DONE);
+        taskManager.updateSubtask(subtask2);
         subtask3.setStatus(TaskStatus.DONE);
+        taskManager.updateSubtask(subtask3);
         printAllTasks(taskManager);
 
         taskManager.removeTaskById(task1.getIndex());

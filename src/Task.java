@@ -12,20 +12,9 @@ public class Task {
         this.status = TaskStatus.NEW;
     }
 
-    public Task(int uuid, String name, String description) {
-        this.name = name;
-        this.description = description;
-        this.status = TaskStatus.NEW;
-    }
-
     public Task(String name, String description, TaskStatus status) {
         this(name, description);
         this.status = status;
-    }
-
-    public Task(int index, String name, String description, TaskStatus status) {
-        this(name, description, status);
-        this.index = index;
     }
 
     public Integer getIndex() {
@@ -70,6 +59,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return getName() + "; " + getDescription() + "; " + getStatus();
+        return String.format("%s; %s; %s", getName(), getDescription(), getStatus());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 31 * hash + (index == null ? 0 : index);
+        hash = 31 * hash + (name == null ? 0 : name.hashCode());
+        hash = 31 * hash + (description == null ? 0 : description.hashCode());
+        return hash;
     }
 }

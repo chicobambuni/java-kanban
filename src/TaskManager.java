@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -7,7 +8,7 @@ public class TaskManager {
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
     private final HashMap<Integer, Epic> epics = new HashMap<>();
 
-    protected void updateEpicStatus(Epic epic) {
+    public void updateEpicStatus(Epic epic) {
         epic.setStatus(TaskStatus.NEW);
 
         for (Subtask subtask : epic.getSubtasks()) {
@@ -153,10 +154,25 @@ public class TaskManager {
     }
 
     public void removeSubtaskById(int id) {
+        Subtask subtask = subtasks.get(id);
+        Epic epic = subtask.getEpic();
+
+        if (epic != null) {
+            epic.getSubtasks().remove(subtask);
+            updateEpicStatus(epic);
+        }
+
         subtasks.remove(id);
     }
 
     public void removeEpicById(int id) {
+        Epic epic = epics.get(id);
+        ArrayList<Subtask> epicSubtasks = epic.getSubtasks();
+
+        for (Subtask epicSubtask : epicSubtasks) {
+            subtasks.remove(epicSubtask.getIndex());
+        }
+
         epics.remove(id);
     }
 

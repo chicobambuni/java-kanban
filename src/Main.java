@@ -1,5 +1,5 @@
 public class Main {
-    public static void printAllTasks(TaskManager taskManager) {
+    public static void printAllTasks(InMemoryTaskManager taskManager) {
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(task);
         }
@@ -13,7 +13,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
         Task task1 = new Task("task1", "Описание");
         Task task2 = new Task("task2", "Описание");

@@ -1,5 +1,5 @@
 public class Main {
-    public static void printAllTasks(InMemoryTaskManager taskManager) {
+    public static void printAllTasks(TaskManager taskManager) {
         for (Task task : taskManager.getAllTasks()) {
             System.out.println(task);
         }
@@ -8,6 +8,12 @@ public class Main {
         }
         for (Subtask subtask : taskManager.getAllSubtasks()) {
             System.out.println(subtask);
+        }
+
+        System.out.println();
+        System.out.println("История просмотров:");
+        for (Task task : taskManager.getHistory()) {
+            System.out.println(task);
         }
         System.out.println();
     }
@@ -32,6 +38,10 @@ public class Main {
         taskManager.addSubtask(subtask3);
         taskManager.addEpic(epic1);
         taskManager.addEpic(epic2);
+        printAllTasks(taskManager);
+
+        taskManager.getTaskById(task1.getIndex());
+        taskManager.getSubtaskById(subtask1.getIndex());
         printAllTasks(taskManager);
 
         task1.setStatus(TaskStatus.IN_PROGRESS);

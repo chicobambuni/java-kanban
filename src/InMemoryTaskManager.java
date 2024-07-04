@@ -6,8 +6,7 @@ import java.util.List;
 public class InMemoryTaskManager implements TaskManager {
     private int taskCounter = 0;
 
-    private final int MAX_HISTORY_SIZE = 10;
-    private ArrayList<Task> history = new ArrayList<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     private final HashMap<Integer, Task> tasks = new HashMap<>();
     private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
@@ -28,34 +27,24 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public void addTaskToHistory(Task task) {
-        if (history.size() < MAX_HISTORY_SIZE) {
-            history.add(task);
-            return;
-        }
-
-        history = new ArrayList<>(history.subList(1, MAX_HISTORY_SIZE));
-        history.add(task);
-    }
-
     @Override
     public Collection<Task> getHistory() {
-        return history;
+        return historyManager.getHistory();
     }
 
     @Override
     public Collection<Task> getAllTasks() {
-        return tasks.values();
+        return this.tasks.values();
     }
 
     @Override
     public Collection<Subtask> getAllSubtasks() {
-        return subtasks.values();
+        return this.subtasks.values();
     }
 
     @Override
     public Collection<Epic> getAllEpic() {
-        return epics.values();
+        return this.epics.values();
     }
 
 
@@ -77,21 +66,21 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTaskById(int index) {
         Task task = tasks.get(index);
-        addTaskToHistory(task);
+        historyManager.add(task);
         return task;
     }
 
     @Override
     public Subtask getSubtaskById(int index) {
         Subtask subtask = subtasks.get(index);
-        addTaskToHistory(subtask);
+        historyManager.add(subtask);
         return subtask;
     }
 
     @Override
     public Epic getEpicById(int index) {
         Epic epic = epics.get(index);
-        addTaskToHistory(epic);
+        historyManager.add(epic);
         return epic;
     }
 

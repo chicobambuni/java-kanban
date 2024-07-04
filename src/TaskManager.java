@@ -1,6 +1,7 @@
 import java.util.Collection;
 
 public interface TaskManager {
+    public Collection<Task> getHistory();
     public Collection<Task> getAllTasks();
     public Collection<Subtask> getAllSubtasks();
     public Collection<Epic> getAllEpic();

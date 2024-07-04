@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
     private int taskCounter = 0;
@@ -86,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     @Override
-    public void addTask(Task task) {
+    public int addTask(Task task) {
         if (task.getIndex() == null) {
             task.setIndex(taskCounter++);
         }
@@ -96,10 +95,11 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         tasks.put(task.getIndex(), task);
+        return task.getIndex();
     }
 
     @Override
-    public void addSubtask(Subtask subtask) {
+    public int addSubtask(Subtask subtask) {
         if (subtask.getIndex() == null) {
             subtask.setIndex(taskCounter++);
         }
@@ -114,10 +114,11 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         subtasks.put(subtask.getIndex(), subtask);
+        return subtask.getIndex();
     }
 
     @Override
-    public void addEpic(Epic epic) {
+    public int addEpic(Epic epic) {
         if (epic.getIndex() == null) {
             epic.setIndex(taskCounter++);
         }
@@ -129,6 +130,7 @@ public class InMemoryTaskManager implements TaskManager {
         updateEpicStatus(epic);
 
         epics.put(epic.getIndex(), epic);
+        return epic.getIndex();
     }
 
 

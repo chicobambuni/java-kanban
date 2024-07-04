@@ -2,11 +2,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public class InMemoryHistoryManager implements HistoryManager {
+    public final int MAX_HISTORY_SIZE = 10;
     private ArrayList<Task> history = new ArrayList<>();
 
     private void adaptHistory() {
-        int MAX_HISTORY_SIZE = 10;
-
         if (history.size() > MAX_HISTORY_SIZE) {
             int startIndex = history.size() - MAX_HISTORY_SIZE;
             history = new ArrayList<>(history.subList(startIndex, history.size()));

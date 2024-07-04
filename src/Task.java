@@ -6,15 +6,25 @@ public class Task {
     protected String description;
     protected TaskStatus status;
 
-    public Task(String name, String description) {
+    public Task(int index, String name, String description, TaskStatus status) {
+        this.index = index;
         this.name = name;
         this.description = description;
-        this.status = TaskStatus.NEW;
+        this.status = status;
+    }
+
+    public Task(int index, String name, String description) {
+        this(index, name, description, TaskStatus.NEW);
     }
 
     public Task(String name, String description, TaskStatus status) {
-        this(name, description);
+        this.name = name;
+        this.description = description;
         this.status = status;
+    }
+
+    public Task(String name, String description) {
+        this(name, description, TaskStatus.NEW);
     }
 
     public Integer getIndex() {

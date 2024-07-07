@@ -1,3 +1,9 @@
+package common;
+
+import model.Epic;
+import model.Subtask;
+import model.Task;
+
 import java.util.Collection;
 
 public interface TaskManager {

@@ -1,3 +1,8 @@
+package manager;
+
+import common.HistoryManager;
+import common.TaskManager;
+
 public class Managers {
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();

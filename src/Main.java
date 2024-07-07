@@ -1,3 +1,10 @@
+import common.TaskManager;
+import manager.InMemoryTaskManager;
+import model.Epic;
+import model.Subtask;
+import model.Task;
+import model.TaskStatus;
+
 public class Main {
     public static void printAllTasks(TaskManager taskManager) {
         for (Task task : taskManager.getAllTasks()) {

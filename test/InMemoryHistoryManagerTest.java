@@ -5,44 +5,73 @@ import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest {
+    int taskIndex = 0;
     InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
+
+    private int nextUniqueIndex() {
+        return taskIndex++;
+    }
 
     @Test
     public void mustAddToHistory() {
-        Task task = new Task("Задача", "Описание");
-        Epic epic = new Epic("Эпик", "Описание");
-        Subtask subtask = new Subtask("Подзадача", "Описание", epic);
+        Task task = new Task(nextUniqueIndex(), "Задача", "Описание");
+        Epic epic = new Epic(nextUniqueIndex(), "Эпик", "Описание");
+        Subtask subtask = new Subtask(nextUniqueIndex(), "Подзадача", "Описание", epic);
 
         historyManager.add(task);
         historyManager.add(epic);
         historyManager.add(subtask);
 
         assertTrue(historyManager.getHistory().contains(task), "Отсутствует задача");
-        assertTrue(historyManager.getHistory().contains(epic), "Отсутствует подзадача");
-        assertTrue(historyManager.getHistory().contains(subtask), "Отсутствует эпик");
+        assertTrue(historyManager.getHistory().contains(epic), "Отсутствует эпик");
+        assertTrue(historyManager.getHistory().contains(subtask), "Отсутствует подзадача");
     }
 
     @Test
-    public void shouldSavePreviousVersionOfTask() {
-        Task task = new Task("Задача", "Описание", TaskStatus.NEW);
-        int startSize = historyManager.getHistory().size();
-        historyManager.add(task);
-        historyManager.add(task);
+    public void mustRemoveFromHistory() {
+        Task task = new Task(nextUniqueIndex(), "Задача", "Описание");
 
-        assertEquals(2, historyManager.getHistory().size() - startSize, "Размер истории не соответствует");
-        assertEquals(historyManager.getHistory().getLast(), task, "Не сохранена последняя версия задачи");
-        assertEquals(historyManager.getHistory().get(startSize + 1), task, "Не сохранена предыдущая версия задачи");
+        historyManager.add(task);
+        historyManager.remove(task.getIndex());
+
+        assertFalse(historyManager.getHistory().contains(task), "Присутствует задача");
     }
 
     @Test
-    public void sizeShouldBeLessThanMaxSize() {
-        for (int i = 0; i < historyManager.MAX_HISTORY_SIZE + 1; i++) {
-            historyManager.add(new Task("Задача", "Описание"));
+    public void mustRemoveAllFromHistory() {
+        Task task = new Task(nextUniqueIndex(), "Задача", "Описание");
+
+        historyManager.add(task);
+
+        ArrayList<Task> history = historyManager.getHistory();
+        for (Task value : history) {
+            historyManager.remove(value.getIndex());
         }
 
-        assertEquals(historyManager.MAX_HISTORY_SIZE, historyManager.getHistory().size(), "Неккоректный размер истории");
+        assertFalse(historyManager.getHistory().contains(task), "История не пуста!");
+    }
+
+    @Test
+    public void mustContainOnlyUnique() {
+        int index = nextUniqueIndex();
+        Task task = new Task(index, "Задача", "Описание", TaskStatus.NEW);
+        historyManager.add(task);
+        historyManager.add(task);
+
+        int numberOfSamples = 0;
+        ArrayList<Task> history = historyManager.getHistory();
+
+        for (Task value : history) {
+            if (value.getIndex() == index) {
+                numberOfSamples++;
+            }
+        }
+
+        assertFalse(numberOfSamples != 1, "Задача имеет дубликат в истории");
     }
 }

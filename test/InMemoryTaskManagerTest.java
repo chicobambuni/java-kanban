@@ -104,6 +104,18 @@ class InMemoryTaskManagerTest {
         Subtask subtask = new Subtask("Подзадача", "Описание", TaskStatus.IN_PROGRESS, epic);
         tm.addSubtask(subtask);
 
-        assertTrue(epic.getSubtasks().contains(subtask), "Эпик имеет некоректный статус");
+        assertNotEquals(epic.getStatus(), TaskStatus.NEW, "Эпик имеет некоректный статус");
+    }
+
+    @Test
+    public void epicShouldNotContainSubtask() {
+        Epic epic = new Epic("Эпик", "Описание");
+        Subtask subtask = new Subtask("Подзадача", "Описание", TaskStatus.IN_PROGRESS, epic);
+
+        tm.addEpic(epic);
+        tm.addSubtask(subtask);
+        tm.removeSubtaskById(subtask.getIndex());
+
+        assertFalse(epic.getSubtasks().contains(subtask), "Эпик хранит в себе неактуальную подзадачу");
     }
 }

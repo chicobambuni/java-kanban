@@ -80,6 +80,18 @@ class InMemoryTaskManagerTest {
 
     @Test
     public void mustRemoveAll() {
+        Task task = new Task("Задача", "Описание");
+        Epic epic = new Epic("Эпик", "Описание");
+        Subtask subtask = new Subtask("Подзадача", "Описание", epic);
+
+        tm.addTask(task);
+        tm.addSubtask(subtask);
+        tm.addEpic(epic);
+
+        tm.getTaskById(task.getIndex());
+        tm.getSubtaskById(subtask.getIndex());
+        tm.getEpicById(epic.getIndex());
+
         tm.removeAllTasks();
         tm.removeAllSubtasks();
         tm.removeAllEpics();
@@ -87,6 +99,7 @@ class InMemoryTaskManagerTest {
         assertEquals(tm.getAllTasks().size(), 0, "После удаления остались задачи");
         assertEquals(tm.getAllSubtasks().size(), 0, "После удаления остались подзадачи");
         assertEquals(tm.getAllEpic().size(), 0, "После удаления остались эпики");
+        assertEquals(tm.getHistory().size(), 0, "После очищения менеджера в истории остались задачи");
     }
 
     @Test

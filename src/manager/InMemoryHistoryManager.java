@@ -6,9 +6,11 @@ import model.TaskNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final HashMap<Integer, TaskNode> nodes;
+    private final Map<Integer, TaskNode> nodes;
     private TaskNode first;
     private TaskNode last;
 
@@ -33,8 +35,8 @@ public class InMemoryHistoryManager implements HistoryManager {
         nodes.put(task.getIndex(), last);
     }
 
-    private ArrayList<Task> getTasks() {
-        ArrayList<Task> tasks = new ArrayList<>();
+    private List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>();
         TaskNode current = first;
 
         while (current != null) {
@@ -78,7 +80,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
+    public List<Task> getHistory() {
         return getTasks();
     }
 }

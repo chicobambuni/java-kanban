@@ -5,7 +5,7 @@ import model.Task;
 import model.TaskStatus;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,7 +48,7 @@ class InMemoryHistoryManagerTest {
 
         historyManager.add(task);
 
-        ArrayList<Task> history = historyManager.getHistory();
+        List<Task> history = historyManager.getHistory();
         for (Task value : history) {
             historyManager.remove(value.getIndex());
         }
@@ -64,7 +64,7 @@ class InMemoryHistoryManagerTest {
         historyManager.add(task);
 
         int numberOfSamples = 0;
-        ArrayList<Task> history = historyManager.getHistory();
+        List<Task> history = historyManager.getHistory();
 
         for (Task value : history) {
             if (value.getIndex() == index) {

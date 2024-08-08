@@ -66,7 +66,7 @@ public class Task {
         if (this == o) return true;
         if (!(o instanceof Task task)) return false;
         return Objects.equals(index, task.index) && Objects.equals(name, task.name) &&
-            Objects.equals(description, task.description) && status == task.status;
+                Objects.equals(description, task.description) && status == task.status;
     }
 
     @Override

@@ -2,32 +2,83 @@ package manager;
 
 import common.HistoryManager;
 import model.Task;
+import model.TaskNode;
 
-import java.util.ArrayList;
+import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    public final int MAX_HISTORY_SIZE = 10;
-    private ArrayList<Task> history;
+    private final Map<Integer, TaskNode> nodes;
+    private TaskNode first;
+    private TaskNode last;
 
     public InMemoryHistoryManager() {
-        history = new ArrayList<>();
+        nodes = new HashMap<>();
     }
 
     @Override
     public void add(Task task) {
-        if (history.size() >= MAX_HISTORY_SIZE) {
-            for (int i = 0; i < MAX_HISTORY_SIZE - 1; i++) {
-                history.set(i, history.get(i + 1));
-            }
+        if (task == null)
+            return;
 
-            history.set(MAX_HISTORY_SIZE - 1, task);
-        } else {
-            history.add(task);
+        if (nodes.containsKey(task.getIndex())) {
+            remove(task.getIndex());
         }
+
+        linkLast(task);
     }
 
     @Override
-    public ArrayList<Task> getHistory() {
-        return history;
+    public void remove(int id) {
+        removeNode(nodes.remove(id));
+    }
+
+    @Override
+    public List<Task> getHistory() {
+        return getTasks();
+    }
+
+    private void linkLast(Task task) {
+        TaskNode newNode = new TaskNode(task, last, null);
+
+        if (last == null) {
+            first = newNode;
+        } else {
+            last.setNext(newNode);
+        }
+
+        last = newNode;
+        nodes.put(task.getIndex(), newNode);
+    }
+
+    private List<Task> getTasks() {
+        List<Task> tasks = new ArrayList<>(nodes.size());
+        TaskNode current = first;
+
+        while (current != null) {
+            tasks.add(current.getTask());
+            current = current.getNext();
+        }
+
+        return tasks;
+    }
+
+    private void removeNode(TaskNode node) {
+        if (node == null)
+            return;
+
+        TaskNode prev = node.getPrev();
+        TaskNode next = node.getNext();
+
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.setNext(next);
+        }
+
+        if (next == null) {
+            last = prev;
+        } else {
+            next.setPrev(prev);
+        }
     }
 }
